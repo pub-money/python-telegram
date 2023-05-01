@@ -224,11 +224,49 @@ class Telegram:
 
         return self._send_data(data)
 
+    def set_chat_message_sender(
+        self,
+        chat_id: int,
+        sender_id: int,
+        sender_type: str,
+    ) -> AsyncResult:
+        """
+            Selects the sender in the specified chat
+
+        Args:
+            chat_id
+            sender_id
+
+        Returns:
+            AsyncResult
+            The update will be:
+                {
+                    '@type': 'updateChatMessageSender',
+                    'chat_id': 1,
+                    'sender_id': 2,
+                    ...
+                }
+        """
+
+        data = {
+            '@type': 'setChatMessageSender',
+            'chat_id': chat_id,
+            'message_sender_id': {
+                '@type': 'messageSenderChat' if sender_type == 'chat' else 'messageSender_user',
+                'chat_id' if sender_type == 'chat' else 'user_id': sender_id,
+            }
+        }
+
+        return self._send_data(data)
+
+
     def send_message(
         self,
         chat_id: int,
         text: Union[str, Element],
         entities: Union[List[dict], None] = None,
+        reply_to_message_id: int = None,
+        message_thread_id: int = None,
     ) -> AsyncResult:
         """
         Sends a message to a chat. The chat must be in the tdlib's database.
@@ -277,6 +315,10 @@ class Telegram:
                 },
             },
         }
+        if reply_to_message_id is not None:
+            data['reply_to_message_id'] = reply_to_message_id
+        if message_thread_id is not None:
+            data['message_thread_id'] = message_thread_id
 
         return self._send_data(data)
 
