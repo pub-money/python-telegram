@@ -267,6 +267,7 @@ class Telegram:
         entities: Union[List[dict], None] = None,
         reply_to_message_id: int = None,
         message_thread_id: int = None,
+        send_at_ts: int = None,
     ) -> AsyncResult:
         """
         Sends a message to a chat. The chat must be in the tdlib's database.
@@ -319,6 +320,14 @@ class Telegram:
             data['reply_to_message_id'] = reply_to_message_id
         if message_thread_id is not None:
             data['message_thread_id'] = message_thread_id
+        if send_at_ts is not None:
+            data['options'] = {
+                '@type': 'messageSendOptions',
+                'scheduling_state': {
+                    '@type': 'messageSchedulingStateSendAtDate',
+                    'send_date': send_at_ts,
+                },
+            }
 
         return self._send_data(data)
 
