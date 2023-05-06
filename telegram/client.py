@@ -224,6 +224,40 @@ class Telegram:
 
         return self._send_data(data)
 
+
+    def get_chat_available_message_senders(
+        self,
+        chat_id: int,
+    ) -> AsyncResult:
+        """
+            Gets the list of available senders specified chat
+
+        Args:
+            chat_id
+
+        Returns:
+            AsyncResult
+            The update will be:
+                {
+                    '@type': 'messageSenders',
+                    'senders': [
+                        {
+                            '@type': 'messageSenderChat'/'messageSenderUser',
+                            'chat_id'/'user_id': 1,
+                        },
+                        ...
+                    ]
+                }
+        """
+
+        data = {
+            '@type': 'getChatAvailableMessageSenders',
+            'chat_id': chat_id,
+        }
+
+        return self._send_data(data)
+
+
     def set_chat_message_sender(
         self,
         chat_id: int,
@@ -239,13 +273,7 @@ class Telegram:
 
         Returns:
             AsyncResult
-            The update will be:
-                {
-                    '@type': 'updateChatMessageSender',
-                    'chat_id': 1,
-                    'sender_id': 2,
-                    ...
-                }
+            The update will be None
         """
 
         data = {
@@ -330,6 +358,70 @@ class Telegram:
             }
 
         return self._send_data(data)
+
+
+    def update_message_interaction_info(
+        self,
+        chat_id: int,
+        message_id: int,
+    ) -> AsyncResult:
+        """
+            Updates fetched data about message
+
+        Args:
+            chat_id
+            message_id
+
+        Returns:
+            AsyncResult
+            The update will be None
+        """
+
+        data = {
+            '@type': 'updateMessageInteractionInfo',
+            'chat_id': chat_id,
+            'message_id': message_id,
+        }
+
+        return self._send_data(data)
+
+
+    def get_messages(
+        self,
+        chat_id: int,
+        message_ids: List[int],
+    ) -> AsyncResult:
+        """
+            Selects the sender in the specified chat
+
+        Args:
+            chat_id
+            message_id
+
+        Returns:
+            AsyncResult
+            The update will be:
+                {
+                    '@type': 'messages',
+                    'messages': [
+                        {
+                            '@type': 'message',
+                            ...
+                        },
+                        ...
+                    ]
+                }
+
+        """
+
+        data = {
+            '@type': 'getMessages',
+            'chat_id': chat_id,
+            'message_ids': message_ids,
+        }
+
+        return self._send_data(data)
+
 
     def import_contacts(self, contacts: List[Dict[str, str]]) -> AsyncResult:
         """
