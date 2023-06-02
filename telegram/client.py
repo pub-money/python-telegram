@@ -386,13 +386,37 @@ class Telegram:
         return self._send_data(data)
 
 
+    def view_messages(
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        message_ids: List[int],
+    ) -> AsyncResult:
+        """
+            Tells tdlib that specified messages have been viewed
+
+        Args:
+            chat_id
+            message_thread_id // can be 0
+            message_ids
+        """
+
+        data = {
+            '@type': 'viewMessages',
+            'chat_id': chat_id,
+            'message_thread_id': message_thread_id,
+            'message_ids': message_ids,
+        }
+
+        return self._send_data(data)
+
     def get_messages(
         self,
         chat_id: int,
         message_ids: List[int],
     ) -> AsyncResult:
         """
-            Selects the sender in the specified chat
+            Gets a list of messages
 
         Args:
             chat_id
@@ -532,6 +556,16 @@ class Telegram:
             'limit': limit,
         }
 
+        return self._send_data(data)
+
+    def open_chat(self, chat_id: int) -> AsyncResult:
+        """
+        Tell tdlib about a chat opened
+        """
+        data = {
+            '@type': 'openChat',
+            'chat_id': chat_id,
+        }
         return self._send_data(data)
 
     def get_chat_history(
