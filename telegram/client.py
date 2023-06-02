@@ -477,6 +477,14 @@ class Telegram:
 
         return self._send_data(data)
 
+    def get_chat_statistics(self, chat_id: int) -> AsyncResult:
+        """
+        Gets advances chat statistics.
+        """
+        data = {'@type': 'getChatStatistics', 'chat_id': chat_id}
+
+        return self._send_data(data)
+
     def get_me(self) -> AsyncResult:
         """
         Requests information of the current user (getMe method)
@@ -605,6 +613,16 @@ class Telegram:
                 'revoke': revoke,
             }
         )
+
+    def get_supergroup(self, supergroup_id: int) -> AsyncResult:
+        """
+        Get the supergroup object
+
+        Args:
+            supergroup_id
+        """
+
+        return self._send_data({'@type': 'getSupergroup', 'supergroup_id': supergroup_id})
 
     def get_supergroup_full_info(self, supergroup_id: int) -> AsyncResult:
         """
