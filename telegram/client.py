@@ -400,6 +400,7 @@ class Telegram:
             chat_id
             message_thread_id // can be 0
             message_ids
+            force_read
         """
 
         data = {
@@ -408,6 +409,27 @@ class Telegram:
             'message_thread_id': message_thread_id,
             'message_ids': message_ids,
             'force_read': force_read,
+        }
+
+        return self._send_data(data)
+
+    def open_message_content(
+        self,
+        chat_id: int,
+        message_id: int,
+    ) -> AsyncResult:
+        """
+            Tells tdlib that specified messages have been opened
+
+        Args:
+            chat_id
+            message_id
+        """
+
+        data = {
+            '@type': 'openMessageContent',
+            'chat_id': chat_id,
+            'message_id': message_id,
         }
 
         return self._send_data(data)
