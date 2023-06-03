@@ -391,6 +391,7 @@ class Telegram:
         chat_id: int,
         message_thread_id: int,
         message_ids: List[int],
+        force_read: bool,
     ) -> AsyncResult:
         """
             Tells tdlib that specified messages have been viewed
@@ -406,6 +407,7 @@ class Telegram:
             'chat_id': chat_id,
             'message_thread_id': message_thread_id,
             'message_ids': message_ids,
+            'force_read': force_read,
         }
 
         return self._send_data(data)
